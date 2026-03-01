@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ashtrix Admin - Orders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-charcoal: #0b0b0b; --text-primary: #ffffff; --glass-border: rgba(255, 255, 255, 0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-x: hidden; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-charcoal); color: var(--text-primary); min-height: 100vh; display: flex; overflow-x: hidden; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); z-index: -1; }
+        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #ff4d94; opacity: 0.3; }
+        
+        .sidebar { width: 250px; background: rgba(73, 42, 58, 0.9); backdrop-filter: blur(20px); padding: 2rem; display: flex; flex-direction: column; color: white; position: fixed; height: 100vh; z-index: 100; }
+        .brand { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 3rem; letter-spacing: 0.1em; }
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 1rem; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 1.1rem; display: block; padding: 10px; border-radius: 8px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.1); color: white; }
+
+        .main-content { flex: 1; margin-left: 250px; padding: 2rem; width: calc(100% - 250px); }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2rem; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-shipped { background: #d4edda; color: #155724; }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; padding: 1rem; }
+            .brand, .link-text { display: none; }
+            .main-content { margin-left: 70px; width: calc(100% - 70px); padding: 1rem; }
+            .glass-panel { overflow-x: auto; padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+
+    <nav class="sidebar">
+        <div class="brand">ASHTRIX</div>
+        <ul class="nav-links">
+            <li><a href="admin.html"><span class="icon">📊</span> <span class="link-text">Dashboard</span></a></li>
+            <li><a href="admin-products.html"><span class="icon">👕</span> <span class="link-text">Products</span></a></li>
+            <li><a href="admin-orders.html" class="active"><span class="icon">📦</span> <span class="link-text">Orders</span></a></li>
+            <li><a href="index.html"><span class="icon">🏠</span> <span class="link-text">View Site</span></a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h1>Customer Orders</h1>
+        <div class="glass-panel">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        const orders = JSON.parse(localStorage.getItem('ashtrix_orders')) || [];
+        const tbody = document.getElementById('ordersTableBody');
+
+        if (orders.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 2rem;">No orders yet.</td></tr>';
+        } else {
+            tbody.innerHTML = orders.map(order => `
+                <tr>
+                    <td>${order.id}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.items}</td>
+                    <td>${order.total}</td>
+                    <td><span class="status-badge status-${order.status.toLowerCase()}">${order.status}</span></td>
+                </tr>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

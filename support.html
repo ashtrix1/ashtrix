@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ashtrix - Support</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-charcoal: #0b0b0b;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden; /* Prevents horizontal scroll */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-charcoal);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* New styles for support page content */
+        .contact-methods {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .contact-methods a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.2s ease;
+        }
+        .contact-methods li:last-child a {
+            border-bottom: none;
+        }
+
+        .contact-methods strong {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .contact-methods a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-methods span {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* iOS Inset Grouped FAQ Styles */
+        .ios-faq-container {
+            max-width: 900px;
+            margin: 1rem auto 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        details.ios-faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ios-faq-container > details:last-of-type {
+            border-bottom: none;
+        }
+
+        summary.ios-faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            list-style: none;
+        }
+        summary.ios-faq-question::-webkit-details-marker {
+            display: none;
+        }
+
+        summary.ios-faq-question:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .ios-faq-answer {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding: 0 1.5rem 1rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .ios-chevron {
+            width: 16px;
+            height: 16px;
+            stroke: rgba(255, 255, 255, 0.7);
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        details[open] > summary.ios-faq-question .ios-chevron {
+            transform: rotate(90deg);
+            stroke: #ffffff;
+        }
+
+        .faq-section-header {
+            max-width: 900px;
+            margin: 2rem auto 0.75rem;
+            padding: 0 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            text-align: left;
+            letter-spacing: 0.05em;
+        }
+
+        /* Background Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+        }
+        .orb-left {
+            top: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #ff4d94;
+            opacity: 0.3;
+        }
+        .orb-right {
+            top: 50%;
+            transform: translateY(-50%);
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #ff8c69;
+            opacity: 0.4;
+        }
+        .orb-center {
+            bottom: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #c3a6ff;
+            opacity: 0.2;
+        }
+
+        /* Hero Section */
+        .hero-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card {
+            background: rgba(20, 10, 20, 0.6);
+            backdrop-filter: blur(50px) saturate(180%);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            padding: 3rem;
+            border-radius: 42px;
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Header Design */
+        header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(73, 42, 58, 0.8);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-logo {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.2em;
+            color: #ffffff;
+            background: transparent;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: #ffffff;
+            filter: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .brand-logo:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        /* Ticker Bar */
+        .ticker-bar {
+            width: 100%;
+            overflow: hidden;
+            background: linear-gradient(90deg, rgba(255, 20, 147, 0.4), rgba(40, 0, 20, 0.6), rgba(255, 20, 147, 0.4));
+            backdrop-filter: blur(15px) saturate(200%);
+            -webkit-backdrop-filter: blur(15px) saturate(200%);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+            border-radius: 0;
+            position: relative;
+            margin-bottom: 40px;
+            z-index: 2;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-track {
+            display: flex;
+            white-space: nowrap;
+            animation: scroll 40s linear infinite;
+            will-change: transform;
+        }
+
+        .ticker-item {
+            padding: 0 0 0 2rem;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+        }
+
+        .ticker-item::after {
+            content: '•';
+            opacity: 0.4;
+            padding-left: 2rem;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Corner Nav */
+        .corner-nav {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+        }
+
+        .nav-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 0.5px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .nav-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .nav-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ff4d94;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ffffff;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header { padding: 0 1.5rem; }
+            .hero-container { padding: 20px; }
+            .glass-card { padding: 2rem 1.5rem; }
+            h1 { font-size: 2.5rem; }
+            .ios-faq-question { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-left"></div>
+    <div class="orb orb-right"></div>
+    <div class="orb orb-center"></div>
+
+    <header>
+        <a href="index.html" class="brand-logo">Ashtrix</a>
+        <div class="corner-nav">
+            <a href="index.html" class="nav-icon" aria-label="Home">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </a>
+            <a href="support.html" class="nav-icon" aria-label="Support">
+                <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+            </a>
+            <a href="cart.html" class="nav-icon" aria-label="Cart">
+                <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span class="cart-badge">2</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="ticker-bar">
+        <div class="ticker-track">
+            <div class="ticker-item">😎 Casual Vibes</div>
+            <div class="ticker-item">🎮 Gamer Prints</div>
+            <div class="ticker-item">🎬 Movie & Pop Culture</div>
+            <div class="ticker-item">🏏 Sports Collection</div>
+            <div class="ticker-item">🎵 Music Inspired</div>
+            <div class="ticker-item">💬 Quote Tees</div>
+            <div class="ticker-item">🌿 Minimal Designs</div>
+            <div class="ticker-item">😎 Casual Vibes</div>
+            <div class="ticker-item">🎮 Gamer Prints</div>
+            <div class="ticker-item">🎬 Movie & Pop Culture</div>
+            <div class="ticker-item">🏏 Sports Collection</div>
+            <div class="ticker-item">🎵 Music Inspired</div>
+            <div class="ticker-item">💬 Quote Tees</div>
+            <div class="ticker-item">🌿 Minimal Designs</div>
+        </div>
+    </div>
+
+    <main class="hero-container">
+        <div class="glass-card">
+            <h1>Support & FAQ</h1>
+
+            <h2 class="faq-section-header">GENERAL</h2>
+            <div class="ios-faq-container">
+                <details class="ios-faq-item">
+                    <summary class="ios-faq-question">
+                        <span>What is your Return Policy?</span>
+                        <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </summary>
+                    <div class="ios-faq-answer">
+                        We follow a strict no-return and no-exchange policy.
+                    </div>
+                </details>
+                <details class="ios-faq-item">
+                    <summary class="ios-faq-question">
+                        <span>How do I change or cancel an order?</span>
+                        <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </summary>
+                    <div class="ios-faq-answer">
+                        Contact us immediately via WhatsApp or Instagram DM. Changes are only possible before shipping.
+                    </div>
+                </details>
+                <details class="ios-faq-item">
+                    <summary class="ios-faq-question">
+                        <span>Do you ship internationally?</span>
+                        <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </summary>
+                    <div class="ios-faq-answer">
+                        No, we currently ship all over India only.
+                    </div>
+                </details>
+            </div>
+
+            <h2 class="faq-section-header">🛍️ ORDERING & PAYMENTS</h2>
+            <div class="ios-faq-container">
+                <details class="ios-faq-item">
+                    <summary class="ios-faq-question">
+                        <span>What payment methods do you accept?</span>
+                        <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </summary>
+                    <div class="ios-faq-answer">
+                        We accept UPI (Google Pay, PhonePe, Paytm), Net Banking, and all major cards.
+                    </div>
+                </details>
+                <details class="ios-faq-item">
+                    <summary class="ios-faq-question">
+                        <span>Is Cash on Delivery (COD) available?</span>
+                        <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </summary>
+                    <div class="ios-faq-answer">
+                        No.
+                    </div>
+                </details>
+                <details class="ios-faq-item">
+                    <summary class="ios-faq-question">
+                        <span>What if I receive a damaged product?</span>
+                        <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </summary>
+                    <div class="ios-faq-answer">
+                        You must record an unboxing video and contact us via WhatsApp within 24 hours of delivery.
+                    </div>
+                </details>
+            </div>
+
+            <h2 class="faq-section-header">CONTACT US</h2>
+            <div class="ios-faq-container">
+                 <ul class="contact-methods">
+                    <li>
+                        <a href="mailto:support@ashtrix.com">
+                            <div>
+                                <strong>Email Us</strong>
+                                <span>support@ashtrix.com</span>
+                            </div>
+                            <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wa.me/917395871948" target="_blank">
+                            <div>
+                                <strong>WhatsApp</strong>
+                                <span>Chat with us instantly</span>
+                            </div>
+                            <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://instagram.com/ashtrix_tees" target="_blank">
+                            <div>
+                                <strong>Instagram DM</strong>
+                                <span>@ashtrix_tees</span>
+                            </div>
+                            <svg class="ios-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

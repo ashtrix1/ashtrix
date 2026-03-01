@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ashtrix - T-Shirt Customization</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-charcoal: #0b0b0b;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden; /* Prevents horizontal scroll */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-charcoal);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Background Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+        }
+        .orb-left {
+            top: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #ff4d94;
+            opacity: 0.3;
+        }
+        .orb-right {
+            top: 50%;
+            transform: translateY(-50%);
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #ff8c69;
+            opacity: 0.4;
+        }
+        .orb-center {
+            bottom: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #c3a6ff;
+            opacity: 0.2;
+        }
+
+        /* Header Design */
+        header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(73, 42, 58, 0.8);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-logo {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.2em;
+            color: #ffffff;
+            background: transparent;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: #ffffff;
+            filter: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .brand-logo:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card {
+            background: rgba(20, 10, 20, 0.6);
+            backdrop-filter: blur(50px) saturate(180%);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            padding: 5rem 3rem;
+            border-radius: 42px;
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+        }
+
+        h1 {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: none;
+            white-space: nowrap;
+        }
+
+        /* Product Grid Styles */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 20px;
+        }
+
+        .product-card {
+            background: rgba(73, 42, 58, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .product-info { padding: 1.5rem; }
+        .product-title { color: #fff; font-weight: 600; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .product-price { color: #fff; font-weight: 800; opacity: 0.8; }
+
+        @media (max-width: 768px) {
+            .glass-card { padding: 3rem 1.5rem; }
+            h1 { font-size: 2.5rem; white-space: normal; }
+            .product-grid { grid-template-columns: 1fr; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-left"></div>
+    <div class="orb orb-right"></div>
+    <div class="orb orb-center"></div>
+
+    <header>
+        <a href="index.html" class="brand-logo">Ashtrix</a>
+    </header>
+
+    <main class="hero-container">
+        <div class="glass-card">
+            <h1>T-Shirt Customization</h1>
+            <p style="color: rgba(255,255,255,0.8); font-size: 1.1rem; margin-top: 1rem;">
+                Create your own unique style.
+            </p>
+        </div>
+
+        <div class="product-grid" id="tshirt-grid"></div>
+    </main>
+
+    <script>
+        try {
+            const products = JSON.parse(localStorage.getItem('ashtrix_products')) || [];
+            const container = document.getElementById('tshirt-grid');
+            const tshirts = products.filter(p => p.category === 'T-Shirt');
+
+            container.innerHTML = tshirts.map(p => `
+                <a href="product-details.html?id=${p.id}" class="product-card">
+                    <img src="${p.image}" alt="${p.name}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-price">₹${p.price}</div>
+                    </div>
+                </a>
+            `).join('');
+        } catch (e) {
+            console.error("Error loading t-shirts:", e);
+        }
+    </script>
+</body>
+</html>

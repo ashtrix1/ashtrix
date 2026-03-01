@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ashtrix Admin - Add Product</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-charcoal: #0b0b0b; --text-primary: #ffffff; --glass-border: rgba(255, 255, 255, 0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-x: hidden; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-charcoal); color: var(--text-primary); min-height: 100vh; display: flex; overflow-x: hidden; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); z-index: -1; }
+        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #ff4d94; opacity: 0.3; }
+        .orb-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #ff8c69; opacity: 0.3; }
+        
+        .sidebar { width: 250px; background: rgba(73, 42, 58, 0.9); backdrop-filter: blur(20px); padding: 2rem; display: flex; flex-direction: column; color: white; position: fixed; height: 100vh; z-index: 100; }
+        .brand { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 3rem; letter-spacing: 0.1em; }
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 1rem; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 1.1rem; display: block; padding: 10px; border-radius: 8px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.1); color: white; }
+
+        .main-content { flex: 1; margin-left: 250px; padding: 2rem; width: calc(100% - 250px); }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2rem; max-width: 800px; margin: 0 auto; }
+        
+        h1 { margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: white; font-family: inherit; }
+        
+        .btn-submit { background: var(--text-primary); color: #000; padding: 14px 32px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; width: 100%; margin-top: 1rem; transition: 0.2s; }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Color Selection Styles */
+        .color-selection { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 5px; }
+        .color-box {
+            width: 35px; height: 35px; border-radius: 50%; cursor: pointer;
+            border: 2px solid rgba(0,0,0,0.1); position: relative; transition: transform 0.2s;
+        }
+        .color-box:hover { transform: scale(1.1); }
+        .color-box.selected { border-color: var(--text-primary); transform: scale(1.1); box-shadow: 0 0 0 2px rgba(255,255,255,0.5) inset; }
+        .color-box.selected::after {
+            content: '✓'; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); color: #fff; font-size: 1rem;
+            text-shadow: 0 0 2px rgba(0,0,0,0.8);
+        }
+        /* White checkmark visibility on white bg */
+        .color-box[data-color="White"].selected::after { color: #000; text-shadow: none; }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; padding: 1rem; }
+            .brand, .link-text { display: none; }
+            .main-content { margin-left: 70px; width: calc(100% - 70px); padding: 1rem; }
+            .glass-panel { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <nav class="sidebar">
+        <div class="brand">ASHTRIX</div>
+        <ul class="nav-links">
+            <li><a href="admin.html"><span class="icon">📊</span> <span class="link-text">Dashboard</span></a></li>
+            <li><a href="admin-products.html"><span class="icon">👕</span> <span class="link-text">Products</span></a></li>
+            <li><a href="admin-orders.html"><span class="icon">📦</span> <span class="link-text">Orders</span></a></li>
+            <li><a href="index.html"><span class="icon">🏠</span> <span class="link-text">View Site</span></a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h1>Add New Product</h1>
+        <div class="glass-panel">
+            <form id="addProductForm">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="pName" required placeholder="e.g. Vintage Graphic Tee">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="pCategory">
+                        <option value="T-Shirt">T-Shirt</option>
+                        <option value="Hoodie">Hoodie</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Price (₹)</label>
+                    <input type="number" id="pPrice" required placeholder="799">
+                </div>
+                <div class="form-group">
+                    <label>Available Colors</label>
+                    <div class="color-selection" id="colorContainer">
+                        <div class="color-box" style="background-color: #ffffff;" data-color="White" onclick="toggleColor(this)"></div>
+                        <div class="color-box" style="background-color: #000000;" data-color="Black" onclick="toggleColor(this)"></div>
+                        <div class="color-box" style="background-color: #0000ff;" data-color="Blue" onclick="toggleColor(this)"></div>
+                        <div class="color-box" style="background-color: #ff0000;" data-color="Red" onclick="toggleColor(this)"></div>
+                        <div class="color-box" style="background-color: #008000;" data-color="Green" onclick="toggleColor(this)"></div>
+                        <div class="color-box" style="background-color: #ffff00;" data-color="Yellow" onclick="toggleColor(this)"></div>
+                        <div class="color-box" style="background-color: #800080;" data-color="Purple" onclick="toggleColor(this)"></div>
+                        <div class="color-box" style="background-color: #ffc0cb;" data-color="Pink" onclick="toggleColor(this)"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Product Image</label>
+                    <input type="file" id="pImage" required accept="image/*">
+                </div>
+                <button type="submit" class="btn-submit">Add Product</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function toggleColor(element) {
+            element.classList.toggle('selected');
+        }
+
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('pImage');
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            const selectedColors = Array.from(document.querySelectorAll('.color-box.selected'))
+                                        .map(el => el.getAttribute('data-color'));
+
+            reader.onload = function(e) {
+                try {
+                    const newProduct = {
+                        id: Date.now(),
+                        name: document.getElementById('pName').value,
+                        category: document.getElementById('pCategory').value,
+                        price: document.getElementById('pPrice').value,
+                        colors: selectedColors.join(', '),
+                        image: e.target.result
+                    };
+
+                    let products = JSON.parse(localStorage.getItem('ashtrix_products')) || [];
+                    products.push(newProduct);
+                    localStorage.setItem('ashtrix_products', JSON.stringify(products));
+
+                    alert('Product Added Successfully!');
+                    window.location.href = 'admin-products.html';
+                } catch (error) {
+                    console.error("Save failed:", error);
+                    alert('Failed to save product. The image might be too large for local storage.');
+                }
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

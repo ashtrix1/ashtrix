@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ashtrix Admin - Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-charcoal: #0b0b0b; --text-primary: #ffffff; --glass-border: rgba(255, 255, 255, 0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-charcoal); color: var(--text-primary); min-height: 100vh; display: flex; overflow-x: hidden; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); z-index: -1; }
+        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #ff4d94; opacity: 0.3; }
+        
+        .sidebar { width: 250px; background: rgba(73, 42, 58, 0.9); backdrop-filter: blur(20px); padding: 2rem; display: flex; flex-direction: column; color: white; position: fixed; height: 100vh; z-index: 100; }
+        .brand { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 3rem; letter-spacing: 0.1em; }
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 1rem; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 1.1rem; display: block; padding: 10px; border-radius: 8px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.1); color: white; }
+
+        .main-content { flex: 1; margin-left: 250px; padding: 2rem; width: calc(100% - 250px); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2rem; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .product-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+        .btn-primary { background: var(--text-primary); color: #000; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; }
+        .btn-delete { background: #f8d7da; color: #721c24; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; padding: 1rem; }
+            .brand, .link-text { display: none; }
+            .main-content { margin-left: 70px; width: calc(100% - 70px); padding: 1rem; }
+            .glass-panel { overflow-x: auto; padding: 1rem; }
+            .header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+
+    <nav class="sidebar">
+        <div class="brand">ASHTRIX</div>
+        <ul class="nav-links">
+            <li><a href="admin.html"><span class="icon">📊</span> <span class="link-text">Dashboard</span></a></li>
+            <li><a href="admin-products.html" class="active"><span class="icon">👕</span> <span class="link-text">Products</span></a></li>
+            <li><a href="admin-orders.html"><span class="icon">📦</span> <span class="link-text">Orders</span></a></li>
+            <li><a href="index.html"><span class="icon">🏠</span> <span class="link-text">View Site</span></a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="header">
+            <h1>All Products</h1>
+            <a href="admin-add-product.html" class="btn-primary">+ Add Product</a>
+        </div>
+
+        <div class="glass-panel">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Colors</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        function loadProducts() {
+            const products = JSON.parse(localStorage.getItem('ashtrix_products')) || [];
+            const tbody = document.getElementById('productTableBody');
+            
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem;">No products found. Add one!</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = products.map((p, index) => `
+                <tr>
+                    <td><img src="${p.image}" class="product-img" alt="${p.name}"></td>
+                    <td>${p.name}</td>
+                    <td>${p.category}</td>
+                    <td>₹${p.price}</td>
+                    <td>${p.colors || '-'}</td>
+                    <td>
+                        <button class="btn-delete" onclick="deleteProduct(${index})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteProduct(index) {
+            if(confirm('Are you sure you want to delete this product?')) {
+                let products = JSON.parse(localStorage.getItem('ashtrix_products'));
+                products.splice(index, 1);
+                localStorage.setItem('ashtrix_products', JSON.stringify(products));
+                loadProducts();
+            }
+        }
+
+        loadProducts();
+    </script>
+</body>
+</html>

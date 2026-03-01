@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ashtrix - Ride the Unseen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-charcoal: #0b0b0b;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-charcoal);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevents horizontal scroll */
+        }
+
+        /* Background Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+        }
+        .orb-left {
+            top: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #ff4d94;
+            opacity: 0.3;
+        }
+        .orb-right {
+            top: 50%;
+            transform: translateY(-50%);
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #ff8c69;
+            opacity: 0.4;
+        }
+        .orb-center {
+            bottom: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #c3a6ff;
+            opacity: 0.2;
+        }
+
+        /* Header Design */
+        header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(73, 42, 58, 0.8);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-logo {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.2em;
+            color: #ffffff;
+            background: transparent;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: #ffffff;
+            filter: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .brand-logo:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card {
+            background: rgba(20, 10, 20, 0.6);
+            backdrop-filter: blur(50px) saturate(180%);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            padding: 5rem 3rem;
+            border-radius: 42px;
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+        }
+
+        .hero-glass-card {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/g0Hf0bdB/Whats-App-Image-2026-02-08-at-8-20-34-PM.jpg');
+            background-size: cover;
+            background-position: center;
+            max-width: 850px;
+            padding: 4rem 2rem;
+        }
+
+        h1 {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: none;
+            white-space: nowrap;
+        }
+
+        .subtitle-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 3rem;
+        }
+
+        .subtitle-capsule {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #ffffff;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .emoji-marker {
+            opacity: 0.8;
+        }
+
+        .primary-btn {
+            display: inline-block;
+            background: #ffffff;
+            color: #000000;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .primary-btn:hover {
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .primary-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Ticker Bar */
+        .ticker-bar {
+            width: 100%;
+            overflow: hidden;
+            background: linear-gradient(90deg, rgba(255, 20, 147, 0.4), rgba(40, 0, 20, 0.6), rgba(255, 20, 147, 0.4));
+            backdrop-filter: blur(15px) saturate(200%);
+            -webkit-backdrop-filter: blur(15px) saturate(200%);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+            border-radius: 0;
+            position: relative;
+            margin-bottom: 40px;
+            z-index: 2;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-track {
+            display: flex;
+            white-space: nowrap;
+            animation: scroll 40s linear infinite;
+            will-change: transform;
+        }
+
+        .ticker-item {
+            padding: 0 0 0 2rem;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+        }
+
+        .ticker-item::after {
+            content: '•';
+            opacity: 0.4;
+            padding-left: 2rem;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Trending Block */
+        .trending-card {
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 4rem 2rem;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 42px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .trending-label {
+            background: transparent;
+            color: #ffffff;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            padding: 0;
+            border-radius: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .trending-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .trending-card:active {
+            transform: scale(0.98);
+        }
+
+        .trending-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGdyTT3yUMLYeNl6W-V44AZD9wkYDb2269iA&s') no-repeat center center/cover;
+            z-index: -2;
+            transform: scale(1.1);
+        }
+
+        .trending-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            position: relative;
+            background: #f2f2f7;
+            color: #000;
+            padding: 2rem;
+            border-radius: 14px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #d1d1d6;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 1rem;
+            line-height: 28px;
+            text-align: center;
+            cursor: pointer;
+            color: #8e8e93;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background-color: #c7c7cc;
+        }
+
+        .modal-content p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #000;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .modal-contact-container {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e5e5;
+            text-align: left;
+        }
+
+        .modal-contact-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-contact-link:not(:last-child) {
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .modal-contact-link:hover {
+            background-color: #f9f9f9;
+        }
+
+        .modal-contact-link svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .sub-customize-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        #designs {
+            scroll-margin-top: 100px;
+        }
+
+        .sub-customize-box {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5rem 2rem;
+            border-radius: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .sub-customize-box span {
+            color: #ffffff;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+
+        .sub-customize-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            transform: scale(1.1);
+        }
+
+        .sub-customize-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        .tshirt-box::before {
+            background-image: url('https://media-assets.grailed.com/prd/listing/45766351/9883c8bc52934646a2c9f71e3d9f87bf');
+        }
+
+        .hoodie-box::before {
+            background-image: url('https://www.urbanmonkey.com/cdn/shop/files/shared-sight-hoodie-um23a-hs-w005-xs-111701.jpg?v=1734935862&width=600');
+        }
+
+        .sub-customize-box:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .sub-customize-box:active {
+            transform: scale(0.98);
+        }
+
+        /* Corner Nav */
+        .corner-nav {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+        }
+
+        .nav-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 0.5px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .nav-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .nav-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ff4d94;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ffffff;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; white-space: normal; }
+            .glass-card { padding: 3rem 1.5rem; }
+            header { padding: 0 1.5rem; }
+            .sub-customize-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .sub-customize-box { padding: 3rem 1.5rem; }
+            .trending-card { padding: 3rem 1.5rem; }
+            .hero-glass-card { padding: 3rem 1.5rem; }
+            .product-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* Admin Modal Inputs */
+        .admin-input {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d1d6;
+            background: #fff; color: #000; font-family: inherit; margin-bottom: 1rem;
+            outline: none; font-size: 1rem;
+        }
+
+        /* Product Grid Styles */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 4rem auto 0;
+            padding: 0 20px;
+        }
+
+        .product-card {
+            background: rgba(73, 42, 58, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .product-info { padding: 1.5rem; }
+        .product-title { color: #fff; font-weight: 600; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .product-price { color: #fff; font-weight: 800; opacity: 0.8; }
+        
+        .section-title { width: 100%; max-width: 1200px; text-align: left; padding: 0 20px; margin-top: 4rem; font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: 1.5rem; color: #fff; }
+
+        /* Footer Styles */
+        footer {
+            text-align: left; 
+            padding: 2.5rem; 
+            color: rgba(255,255,255,0.8); 
+            font-size: 0.9rem; 
+            margin: 4rem auto 2rem auto; 
+            width: calc(100% - 40px); 
+            max-width: 1200px; 
+            background: rgba(0, 0, 0, 0.8); 
+            backdrop-filter: blur(15px); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-contact-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .footer-contact-item svg {
+            width: 22px;
+            height: 22px;
+            stroke: #ff8c69;
+            stroke-width: 1.5;
+            flex-shrink: 0;
+        }
+
+        .footer-heading {
+            font-family: 'Syncopate', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .footer-link:hover {
+            color: #ff8c69;
+        }
+
+        .footer-divider {
+            border: none;
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+            margin: 1.5rem 0;
+        }
+
+        .footer-policy-links a {
+            color: #ff8c69; /* Reddish-brown/orange */
+            font-size: 0.8rem;
+            text-decoration: none;
+            margin-right: 1.5rem;
+            transition: color 0.2s;
+        }
+        .footer-policy-links a:hover {
+            color: #fff;
+        }
+
+        .footer-socials { display: flex; gap: 1rem; }
+        .social-icon {
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.1); border-radius: 50%; color: #fff;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .social-icon:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .social-icon svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .footer-address { display: flex; align-items: center; gap: 0.75rem; color: #fff; font-size: 1rem; font-weight: 500; }
+        .footer-address svg { width: 20px; height: 20px; flex-shrink: 0; fill: #ff8c69; }
+
+        .footer-copyright {
+            text-align: center; margin-top: 2rem; padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5); font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            footer { padding: 2rem 1.5rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-left"></div>
+    <div class="orb orb-right"></div>
+    <div class="orb orb-center"></div>
+
+    <header>
+        <a href="index.html" class="brand-logo">Ashtrix</a>
+        <div class="corner-nav">
+            <a href="index.html" class="nav-icon" aria-label="Home">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </a>
+            <a href="support.html" class="nav-icon" aria-label="Support">
+                <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+            </a>
+            <a href="cart.html" class="nav-icon" aria-label="Cart">
+                <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span class="cart-badge">2</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon" onclick="openAdminModal()" aria-label="Admin Login">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </a>
+        </div>
+    </header>
+
+    <div class="ticker-bar">
+        <div class="ticker-track">
+            <div class="ticker-item">😎 Casual Vibes</div>
+            <div class="ticker-item">🎮 Gamer Prints</div>
+            <div class="ticker-item">🎬 Movie & Pop Culture</div>
+            <div class="ticker-item">🏏 Sports Collection</div>
+            <div class="ticker-item">🎵 Music Inspired</div>
+            <div class="ticker-item">💬 Quote Tees</div>
+            <div class="ticker-item">🌿 Minimal Designs</div>
+            <div class="ticker-item">😎 Casual Vibes</div>
+            <div class="ticker-item">🎮 Gamer Prints</div>
+            <div class="ticker-item">🎬 Movie & Pop Culture</div>
+            <div class="ticker-item">🏏 Sports Collection</div>
+            <div class="ticker-item">🎵 Music Inspired</div>
+            <div class="ticker-item">💬 Quote Tees</div>
+            <div class="ticker-item">🌿 Minimal Designs</div>
+        </div>
+    </div>
+
+    <main class="hero-container">
+        <div class="glass-card hero-glass-card">
+            <h1>Style That Speaks for You.</h1>
+            <div class="subtitle-container">
+                <span class="subtitle-capsule"><span class="emoji-marker">✨</span> High-quality</span>
+                <span class="subtitle-capsule"><span class="emoji-marker">👕</span> Printed T-shirts</span>
+                <span class="subtitle-capsule"><span class="emoji-marker">☁️</span> Crafted for comfort</span>
+                <span class="subtitle-capsule"><span class="emoji-marker">💎</span> And confidence</span>
+            </div>
+            <a href="#designs" class="primary-btn">View Designs</a>
+        </div>
+
+        <a href="javascript:void(0)" onclick="openCustomizeModal()" class="trending-card">
+            <div class="trending-label">CUSTOMIZE</div>
+        </a>
+
+        <div class="sub-customize-container" id="designs">
+            <a href="tshirt.html" class="sub-customize-box tshirt-box">
+                <span>T shirt</span>
+            </a>
+            <a href="hoodie.html" class="sub-customize-box hoodie-box">
+                <span>Hoodie</span>
+            </a>
+        </div>
+
+        <h2 class="section-title" id="latest-title" style="display: none;">Latest Drops</h2>
+        <div class="product-grid" id="latest-products"></div>
+    </main>
+
+    <div class="modal-overlay" id="customize-modal" onclick="closeCustomizeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeCustomizeModal()">&#x2715;</button>
+            <p>IF U ARE INTRESTED IN CUSTOMIZING YOUR T - SHIRT OR HOODIE, THEN KINDLY CONTACT US ON THE WHATSAPP OR INSTAGRAM. WE DO BULK ORDERS IN OFFER PRICES. CONTACT US!</p>
+            <div class="modal-contact-container">
+                <a href="https://wa.me/917395871948" target="_blank" class="modal-contact-link">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#25D366"><title>WhatsApp</title><path d="M17.472 14.382c-.297-.149-.758-.375-1.03-.464-.272-.09-.47-.149-.669.149-.198.297-.375.464-.464.562-.09.099-.187.11-.375.06-.188-.05-.791-.28-1.504-.93-.548-.508-.914-.923-1.062-1.217-.149-.297-.015-.464.134-.611.119-.133.297-.347.446-.52.149-.174.198-.297.297-.495.099-.198.05-.375-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.174-.009-.375-.009-.574-.009-.198 0-.52.074-.791.374-.271.3-.965.93-.965 2.25 0 1.32.99 2.615 1.138 2.79.149.174 1.961 3.132 4.751 4.22.618.297 1.109.464 1.492.588.55.187 1.037.162 1.425.099.438-.074 1.251-.51 1.425-1.003.174-.495.174-.923.124-1.003-.05-.09-.198-.149-.446-.297z"/></svg>
+                    <span>Contact on WhatsApp</span>
+                </a>
+                <a href="https://instagram.com/ashtrix_tees" target="_blank" class="modal-contact-link">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#E4405F"><title>Instagram</title><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.85-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <span>DM on Instagram</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="admin-modal" onclick="closeAdminModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeAdminModal()">&#x2715;</button>
+            <h2 style="margin-bottom: 1.5rem; color: #000;">Owner Login</h2>
+            <div style="text-align: left;">
+                <input type="text" id="admin-username" class="admin-input" placeholder="Username">
+                <input type="password" id="admin-password" class="admin-input" placeholder="Password">
+            </div>
+            <button onclick="attemptAdminLogin()" class="primary-btn" style="width: 100%; border: none; cursor: pointer; margin-top: 0.5rem; background: #000; color: #fff;">Access Dashboard</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h3 class="footer-heading">Call us</h3>
+                <a href="tel:+917395871948" class="footer-link footer-contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <span>+91 7395871948</span>
+                </a>
+                <h3 class="footer-heading" style="margin-top: 1.5rem;">Write To Us</h3>
+                <a href="mailto:suppport@ashtrixgmail.com" class="footer-link footer-contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span>suppport@ashtrixgmail.com</span>
+                </a>
+                <hr class="footer-divider">
+                <div class="footer-policy-links">
+                    <a href="terms.html">Terms & Conditions</a>
+                    <a href="privacy.html">Privacy policy</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3 class="footer-heading">Follow Us On</h3>
+                <div class="footer-socials">
+                    <a href="https://instagram.com/ashtrix_tees" target="_blank" class="social-icon" aria-label="Instagram"><svg role="img" viewBox="0 0 24 24"><title>Instagram</title><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.85-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                    <a href="https://wa.me/917395871948" target="_blank" class="social-icon" aria-label="WhatsApp"><svg role="img" viewBox="0 0 24 24"><title>WhatsApp</title><path d="M17.472 14.382c-.297-.149-.758-.375-1.03-.464-.272-.09-.47-.149-.669.149-.198.297-.375.464-.464.562-.09.099-.187.11-.375.06-.188-.05-.791-.28-1.504-.93-.548-.508-.914-.923-1.062-1.217-.149-.297-.015-.464.134-.611.119-.133.297-.347.446-.52.149-.174.198-.297.297-.495.099-.198.05-.375-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.174-.009-.375-.009-.574-.009-.198 0-.52.074-.791.374-.271.3-.965.93-.965 2.25 0 1.32.99 2.615 1.138 2.79.149.174 1.961 3.132 4.751 4.22.618.297 1.109.464 1.492.588.55.187 1.037.162 1.425.099.438-.074 1.251-.51 1.425-1.003.174-.495.174-.923.124-1.003-.05-.09-.198-.149-.446-.297z"/></svg></a>
+                </div>
+                <h3 class="footer-heading" style="margin-top: 1.5rem;">Shop Address</h3>
+                <div class="footer-address">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span>Thiruthraipoondi - 614713</span>
+                </div>
+            </div>
+        </div>
+        <p class="footer-copyright">&copy; 2026 Ashtrix. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const modal = document.getElementById('customize-modal');
+        const adminModal = document.getElementById('admin-modal');
+
+        function openAdminModal() {
+            adminModal.classList.add('active');
+        }
+
+        function closeAdminModal() {
+            adminModal.classList.remove('active');
+        }
+
+        function attemptAdminLogin() {
+            const u = document.getElementById('admin-username').value;
+            const p = document.getElementById('admin-password').value;
+            if(u === 'Ashtrix' && p === '01') {
+                window.location.href = 'admin.html';
+            } else {
+                alert('Invalid Credentials');
+            }
+        }
+
+        function openCustomizeModal() {
+            modal.classList.add('active');
+        }
+
+        function closeCustomizeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Update Cart Badge
+        const cart = JSON.parse(sessionStorage.getItem('ashtrix_cart')) || [];
+        const badge = document.querySelector('.cart-badge');
+        if(badge) badge.innerText = cart.length;
+
+        // Load Latest Products
+        // NOTE: Data is stored in localStorage, which does not sync across different devices/browsers.
+        try {
+            const products = JSON.parse(localStorage.getItem('ashtrix_products')) || [];
+            const container = document.getElementById('latest-products');
+            
+            if (products.length > 0) {
+                document.getElementById('latest-title').style.display = 'block';
+                // Use spread syntax [...products] to avoid mutating the original array
+                container.innerHTML = [...products].reverse().slice(0, 4).map(p => `
+                    <a href="product-details.html?id=${p.id}" class="product-card">
+                        <img src="${p.image}" alt="${p.name}" class="product-image">
+                        <div class="product-info">
+                            <div class="product-title">${p.name}</div>
+                            <div class="product-price">₹${p.price}</div>
+                        </div>
+                    </a>
+                `).join('');
+            }
+        } catch (e) {
+            console.error("Error loading products:", e);
+        }
+    </script>
+
+</body>
+</html>
